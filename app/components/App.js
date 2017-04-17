@@ -1,23 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class Nav extends React.Component {
-  render() {
-    var nav = ['Completed', 'Pending']
+function Nav(props) {
+  var nav = ['Completed', 'Pending']
 
-    return (
-      <ul className='nav'>
-        { nav.map( (item, i) =>
-          <li
-            className={ item === this.props.activeNav ? 'active' : ''}
-            key={ i }
-            onClick={ this.props.handleClick.bind(null, item) }>
-              { item }
-          </li>
-        ) }
-      </ul>
-    )
-  }
+  return (
+    <ul className='nav'>
+      { nav.map( (item, i) =>
+        <li
+          className={ item === props.activeNav ? 'active' : ''}
+          key={ i }
+          onClick={ props.handleClick.bind(null, item) }>
+            { item }
+        </li>
+      ) }
+    </ul>
+  )
 }
 
 Nav.propTypes = {
@@ -25,20 +23,18 @@ Nav.propTypes = {
   activeNav: PropTypes.string.isRequired
 }
 
-class TodoItem extends React.Component {
-  render() {
-    return (
-      <ul>
-        { this.props.todosToShow.map( (todo, i) => {
-          return (
-            <li key={ i } onClick={ this.props.activeNav === 'Pending' ? this.props.handleDelete.bind(null, todo) : null }>
-              { todo }
-            </li>
-          )
-        }) }
-      </ul>
-    )
-  }
+function TodoItem(props) {
+  return (
+    <ul>
+      { this.props.todosToShow.map( (todo, i) => {
+        return (
+          <li key={ i } onClick={ props.activeNav === 'Pending' ? props.handleDelete.bind(null, todo) : null }>
+            { todo }
+          </li>
+        )
+      }) }
+    </ul>
+  )
 }
 
 TodoItem.propTypes = {
