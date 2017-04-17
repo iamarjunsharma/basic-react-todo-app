@@ -9,6 +9,6 @@ import App from './components/App'
 
 // render
 ReactDOM.render(
-	<App />,
-	document.getElementById('app')
+  <App />,
+  document.getElementById('app')
 )
