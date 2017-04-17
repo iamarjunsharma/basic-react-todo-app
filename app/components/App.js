@@ -1,4 +1,51 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
+class Nav extends React.Component {
+	render() {
+		var nav = ['Completed', 'Pending']
+
+		return (
+			<ul className='nav'>
+				{ nav.map( (item, i) =>
+				  <li
+				  	className={ item === this.props.activeNav ? 'active' : ''}
+				  	key={ i }
+				  	onClick={ this.props.handleClick.bind(null, item) }>
+				  		{ item }
+				  </li>
+				) }
+			</ul>
+		)
+	}
+}
+
+Nav.propTypes = {
+	handleClick: PropTypes.func.isRequired,
+	activeNav: PropTypes.string.isRequired
+}
+
+class TodoItem extends React.Component {
+	render() {
+		return (
+			<ul>
+				{ this.props.todosToShow.map( (todo, i) => {
+					return (
+						<li key={ i } onClick={ this.props.activeNav === 'Pending' ? this.props.handleDelete.bind(null, todo) : null }>
+							{ todo }
+						</li>
+					)
+				}) }
+			</ul>
+		)
+	}
+}
+
+TodoItem.propTypes = {
+	todosToShow: PropTypes.array.isRequired,
+	activeNav: PropTypes.string.isRequired,
+	handleDelete: PropTypes.func.isRequired
+}
 
 export default class App extends React.Component {
 	constructor() {
@@ -64,7 +111,6 @@ export default class App extends React.Component {
 	}
 
 	render () {
-		var nav = ['Completed', 'Pending']
 
 		switch (this.state.activeNav) {
 			case('Completed'):
@@ -78,18 +124,9 @@ export default class App extends React.Component {
 		}
 
 		return (
-			<div className='container'>
+			<div>
 				<h1>Todo App</h1>
-				<ul className='nav'>
-				  { nav.map( (item, i) =>
-				  	<li
-				  		className={ item === this.state.activeNav ? 'active' : ''}
-				  		key={ i }
-				  		onClick={ this.handleClick.bind(null, item) }>
-				  			{ item }
-				  	</li>
-				  ) }
-				</ul>
+				<Nav handleClick={ this.handleClick } activeNav={ this.state.activeNav } />
 				<form onSubmit={ this.handleSubmit }>
 					<input
 						type='text'
@@ -101,18 +138,10 @@ export default class App extends React.Component {
 					<button>Add</button>
 				</form>
 				{ todosToShow.length ?
-						<h2>{ this.state.activeNav }</h2> :
-						null
+					<h2>{ this.state.activeNav }</h2> :
+					null
 				}
-				<ul>
-					{ todosToShow.map( (todo, i) => {
-						return (
-							<li key={ i } onClick={ this.state.activeNav === 'Pending' ? this.handleDelete.bind(null, todo) : null }>
-								{ todo }
-							</li>
-						)
-					}) }
-				</ul>
+				<TodoItem todosToShow={ todosToShow } activeNav={ this.state.activeNav } handleDelete={ this.handleDelete } />
 			</div>
 		)
 	}
