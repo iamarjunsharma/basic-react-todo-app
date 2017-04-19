@@ -26,9 +26,9 @@ Nav.propTypes = {
 function TodoItem(props) {
   return (
     <ul>
-      { this.props.todosToShow.map( (todo, i) => {
+      { props.todosToShow.map( (todo, i) => {
         return (
-          <li key={ i } onClick={ props.activeNav === 'Pending' ? props.handleDelete.bind(null, todo) : null }>
+          <li key={ i } onClick={ props.activeNav !== 'Completed' ? props.handleDelete.bind(null, todo) : null }>
             { todo }
           </li>
         )
@@ -51,7 +51,7 @@ export default class App extends React.Component {
       completedTodos: [],
       pendingTodos: [],
       value: '',
-      activeNav: 'All'
+      activeNav: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -68,7 +68,8 @@ export default class App extends React.Component {
     this.setState( () => {
       return {
         pendingTodos: updatedTodos,
-        value: ''
+        value: '',
+        activeNav: ''
       }
     } )
   }
@@ -138,6 +139,15 @@ export default class App extends React.Component {
           null
         }
         <TodoItem todosToShow={ todosToShow } activeNav={ this.state.activeNav } handleDelete={ this.handleDelete } />
+        { this.state.activeNav === 'Completed' && this.state.completedTodos.length === 0 &&
+          <p>No Completed Todos yet...</p>
+        }
+        { this.state.activeNav === 'Pending' && this.state.pendingTodos.length === 0 &&
+          <p>Hurray !!! No Pending Todos left now...</p>
+        }
+        { todosToShow.length === 0 && this.state.activeNav === '' &&
+          <p>Please enter a Todo to show here.</p>
+        }
       </div>
     )
   }
